@@ -23,7 +23,7 @@
     ps：假如证书是自签名的，则会跳过第二步，使用第三步进行验证，因为自签名的证书的
     根CA的数字签名未在操作系统的信息任务列表中。
 ##3.使用NSURLConnection支持HTTPS的实现（系统证书）
-``
+```
 NSURL * httpsURL = [NSURL URLWithString:@"https://www.google.com"];
 NSURLRequest *request = [NSURLRequest requestWithURL:httpsURL];
 self.connection = [NSURLConnection connectionWithRequest:request delegate:self];
@@ -50,4 +50,4 @@ self.connection = [NSURLConnection connectionWithRequest:request delegate:self];
         [challenge.sender cancelAuthenticationChallenge:challenge];
     }
 }
-``
+```
