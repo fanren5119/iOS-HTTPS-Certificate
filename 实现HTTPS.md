@@ -90,7 +90,8 @@ self.trustedCertificates = @[CFBridgingRelease(certificate)];
         建议采用本地导入证书的方式验证证书，来保证足够的安全性。
 ##5.使用AFNetworking来支持HTTPS
         AFNetworking已经将证书验证逻辑代码封装好，甚至更加完善，在AFSecurityPolicy文件中，
-    AFNetworking配置HTTPS的支持非常简单：
+    AFNetworking配置HTTPS的支持非常简单，一下是AFHTTPRequestOperationManager支持HTTPS，而
+    AFHTTPSessionManager与之基本一致：
 ```
 NSURL * url = [NSURL URLWithString:@"https://www.google.com"];
 AFHTTPRequestOperationManager * requestOperationManager = [[AFHTTPRequestOperationManager alloc] 
@@ -119,5 +120,4 @@ securityPolicy.validatesDomainName = NO;
 securityPolicy.validatesCertificateChain = NO;
 requestOperationManager.securityPolicy = securityPolicy;
 ```
-        AFHTTPSessionManager与之基本一致。
         
