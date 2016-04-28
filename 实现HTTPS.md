@@ -71,7 +71,7 @@ self.trustedCertificates = @[CFBridgingRelease(certificate)];
     //注意：这里将之前导入的证书设置成下面验证的Trust Object的anchor certificate
     SecTrustSetAnchorCertificates(trust, (__bridge CFArrayRef)self.trustedCertificates);
     //2)SecTrustEvaluate会查找前面SecTrustSetAnchorCertificates设置的证书或者系统默认提供的
-    //证书，对trust进行验证
+    //证书，对trust进行验证，这里可以设置验证的策略，如不验证域名等
     OSStatus status = SecTrustEvaluate(trust, &result);
     if (status == errSecSuccess &&
         (result == kSecTrustResultProceed ||
