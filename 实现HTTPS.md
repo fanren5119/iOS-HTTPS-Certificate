@@ -120,4 +120,58 @@ securityPolicy.validatesDomainName = NO;
 securityPolicy.validatesCertificateChain = NO;
 requestOperationManager.securityPolicy = securityPolicy;
 ```
+##6.使用AFSecurityPolicy类来使用NSURLConnection支持HTTPS
+        NSURLConnection实现以下代理方法
+```
+- (void)connection:(NSURLConnection *)connection
+willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:
+        NSURLAuthenticationMethodServerTrust]) {
+        //self.securityPolicy是一个AFSecurityPolicy对象，该对象用来控制证书验证的策略
+        if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust 
+                                        forDomain:challenge.protectionSpace.host]) {
+            NSURLCredential *credential = [NSURLCredential credentialForTrust:
+                                                challenge.protectionSpace.serverTrust];
+            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+        } else {
+            [[challenge sender] cancelAuthenticationChallenge:challenge];
+        }
+    } else {
+        if ([challenge previousFailureCount] == 0) {
+            if (self.credential) {
+                [[challenge sender] useCredential:self.credential 
+                        forAuthenticationChallenge:challenge];
+            } else {
+                [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+            }
+        } else {
+            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+        }
+    }
+}
+```
+        ps：在导入本地证书的时候，AFSecurityPolicy默认的证书名是以.cer结尾，开发中，也可以自己修改
+    导入证书的后缀名，只需要在以下代码中修改
+```
++ (NSArray *)defaultPinnedCertificates {
+    static NSArray *_defaultPinnedCertificates = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        //这里的cer就表示证书是以.cer结尾的文件，可以修改成其他后缀
+        NSArray *paths = [bundle pathsForResourcesOfType:@"cer" inDirectory:@"."];
+
+        NSMutableArray *certificates = [NSMutableArray arrayWithCapacity:[paths count]];
+        for (NSString *path in paths) {
+            NSData *certificateData = [NSData dataWithContentsOfFile:path];
+            [certificates addObject:certificateData];
+        }
+
+        _defaultPinnedCertificates = [[NSArray alloc] initWithArray:certificates];
+    });
+
+    return _defaultPinnedCertificates;
+}
+```
         
