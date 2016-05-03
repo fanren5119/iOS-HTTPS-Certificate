@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFSecurityPolicy.h"
+#import "ShenYunSecurityPolicy.h"
 
 // Equivalent of macro in <AssertMacros.h>, without causing compiler warning:
 // "'DebugAssert' is deprecated: first deprecated in OS X 10.8"
