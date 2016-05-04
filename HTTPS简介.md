@@ -11,7 +11,7 @@
     于接收端，在SSL/TSL将接受的数据包解密之后，将数据传给HTTP协议层，就是浦东的HTTP
     数据。HTTP和SSL/TSL都处于OSI模型的应用层。从HTTP切换到HTTPS时一个非常简单的过程。
 ##3.HTTPS的握手过程
-![HTTPS的握手过程](https.png)
+![HTTPS的握手过程](Image/https.png)
 
         ① 客户端发起HTTPS请求；
         ② 服务端的配置：采用HTTPS协议的服务器必须要有一套数字证书，可以是自己制作或者
